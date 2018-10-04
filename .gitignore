@@ -1,0 +1,6 @@
+*.out
+cmake*
+*.o
+*.a
+json
+.idea
