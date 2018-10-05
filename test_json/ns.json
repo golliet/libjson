@@ -17,16 +17,7 @@
     "about": "Proident ullamco dolor cupidatat adipisicing do esse magna aute fugiat et. Aute veniam do quis enim ut dolore laborum ex veniam est irure ad dolore excepteur. Ad non proident minim anim eu amet consequat do duis tempor ut. Voluptate esse minim minim velit adipisicing aute officia mollit excepteur ipsum. Ut id fugiat ipsum sint pariatur proident pariatur velit minim sint labore voluptate exercitation. Culpa adipisicing sunt labore esse do ad amet aliquip qui anim tempor.\r\n",
     "registered": "2015-09-05T05:50:58 -02:00",
     "latitude": 0.750571,
-    "longitude": -133.555299,
-    "tags": [
-      "veniam",
-      "ex",
-      "ad",
-      "ipsum",
-      "nisi",
-      "sint",
-      "ea"
-    ],
+    "longitude": 123.555299,x
     "friends": [
       {
         "id": 0,
@@ -61,17 +52,8 @@
     "address": "279 Vermont Court, Loretto, Iowa, 3299",
     "about": "Ipsum aute esse nulla laborum officia fugiat eu. Velit aute ex duis ad nisi amet mollit do voluptate mollit aliquip tempor. Sunt occaecat do eiusmod consequat enim anim qui magna ullamco labore.\r\n",
     "registered": "2016-12-15T04:36:35 -01:00",
-    "latitude": -73.275609,
+    "latitude": 73.275609,
     "longitude": 106.541781,
-    "tags": [
-      "mollit",
-      "consequat",
-      "do",
-      "elit",
-      "do",
-      "exercitation",
-      "fugiat"
-    ],
     "friends": [
       {
         "id": 0,
@@ -108,15 +90,6 @@
     "registered": "2017-10-21T10:23:38 -02:00",
     "latitude": 7.175255,
     "longitude": 83.311985,
-    "tags": [
-      "pariatur",
-      "do",
-      "et",
-      "voluptate",
-      "ex",
-      "sunt",
-      "aliquip"
-    ],
     "friends": [
       {
         "id": 0,

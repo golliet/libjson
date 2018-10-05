@@ -30,10 +30,3 @@
     ]
   }
 }
-statue: {
-  {
-    name: "Justin Doe",
-    phone: "877-123-1212",
-    relationship: "parent"
-  }
-}

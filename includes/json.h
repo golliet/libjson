@@ -9,7 +9,9 @@
 #include <fcntl.h>
 #include <string.h>
 #include <unistd.h>
-#include "../libft/includes/libft.h"
+#include "libft.h"
+
+#include <stdio.h> //printf
 
 /*
 ** type
@@ -54,7 +56,17 @@ char                *wy_open_read(const char *path);
 ** Parse
 */
 
-void        wy_loop(char *str);
+void        		wy_loop(char *str);
+int         		wy_recu(char *str, int i, int level, char c);
+
+/*
+** MISC
+*/
+
+void				wy_is_end(char c);
+void				wy_exit(char *str);
+void        		wy_level(int level);
+int					wy_is_space(char c);
 
 
 

@@ -4,3 +4,4 @@ cmake*
 *.a
 json
 .idea
+*.dSYM
