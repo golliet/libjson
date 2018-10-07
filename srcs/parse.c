@@ -20,7 +20,7 @@ int			wy_check_str(char *nft, char *str, int i)
 
 int 		wy_check_number(char *str, int i)
 {
-	while (str[i] && (str[i] == '.' || (str[i] >= '0' && str[i] <= '9')))
+	while (str[i] && (str[i] == '.' || (str[i] >= '0' && str[i] <= '9') || str[i] == '-'))
 	{
 		ft_putchar(str[i]);
 		i++;
@@ -30,21 +30,11 @@ int 		wy_check_number(char *str, int i)
 
 int			wy_value(char *str, int i, int level)
 {
-	if (str[i] == '{' || str[i] == '[') // obj ou array
-	{
-		char c = str[i];
-		if (str[i] == '{')
-			ft_putstr("-> obj : {\n");
-		else
-			ft_putstr("-> array : [\n");
-		i = wy_recu(str, i, level + 1, str[i]);
-		wy_level(level);
-
-		if (c == '{')
-			ft_putstr("}\n");
-		else
-			ft_putstr("]\n");
-	}
+	wy_level(level);
+	if (str[i] == '{')
+		i = wy_loop_obj(str, i, level + 1);
+	else if (str[i] == '[') // obj ou array
+		i = wy_loop_array(str, i, level + 1);
 	else if (str[i] >= '0' && str[i] <= '9') // un nombre
 	{
 		i = wy_check_number(str, i);
@@ -83,7 +73,7 @@ int			wy_value(char *str, int i, int level)
 	return (i);
 }
 
-int			wy_key_value(char *str, int i, int level, char c)
+int			wy_obj(char *str, int i, int level)
 {
 	i++;
 	while (str[i] && str[i] != '"') {
@@ -95,68 +85,77 @@ int			wy_key_value(char *str, int i, int level, char c)
 		return (-1);
 	while (str[i] && wy_is_space(str[i]))
 		i++;
-	if (c == '{')
-	{
-		if (!str[i] || str[i] != ':')
-			wy_exit("missing :");
-		ft_putstr(": ");
+	if (!str[i] || str[i] != ':')
+		wy_exit("missing :");
+	ft_putstr(": ");
+	i++;
+	while (str[i] && wy_is_space(str[i]))
 		i++;
-		while (str[i] && wy_is_space(str[i]))
-			i++;
-		wy_is_end(str[i]);
-		i = wy_value(str, i, level);
-		if (!(str[i] == ',' || str[i] == '}' || str[i] == ']' || str[i] == '\n'))
-			wy_exit("invalidsfsdfd");
-		i++;
-	}
-	else
-		if (!(str[i] == ',' || str[i] == '}' || str[i] == ']' || str[i] == '\n'))
-			wy_exit("invalidsfsdfd");
+	wy_is_end(str[i]);
+	i = wy_value(str, i, level);
+	if (!(str[i] == ',' || str[i] == '}' || str[i] == ']' || str[i] == '\n'))
+		wy_exit("invalidsfsdfd");
+	i++;
 	return (i);
 }
 
-int         wy_recu(char *str, int i, int level, char c)
+int 		wy_array(char *str, int i, int level)
 {
-    int test;
-
-    i++;
-    test = i;
-    while (str[i])
-    {
-        if (str[i] == '{' || str[i] == '[')
-			i = wy_recu(str, i, level + 1, str[i]);
-        else if (str[i] == ']')
-        {
-            wy_level(level);
-            printf("array de %d a %d\n", test, i);
-            return (i);
-        }
-        else if (str[i] == '}')
-        {
-            wy_level(level);
-            printf("Obj de %d a %d\n", test, i);
-            return (i);
-        }
-        else if (str[i] == '"')
-			i = wy_key_value(str, i, level, c);
-        else
-        	i++;
-    }
-    printf("Erreur pas de fin array/obj\n");
-    return (i);
+	i = wy_value(str, i, level);
+	if (!(str[i] == ',' || str[i] == '}' || str[i] == ']' || str[i] == '\n'))
+		wy_exit("invalidsfsdfd");
+	i++;
+	return (i);
 }
 
-void        wy_loop(char *str)
+int 		wy_loop_obj(char *str, int i, int level)
 {
-    int i;
-    int level;
+	wy_level(level);
+	printf("-> {\n");
+	i++;
+	while (str[i] != '}')
+	{
+		while (str[i] && wy_is_space(str[i]))
+			i++;
+		wy_is_end(str[i]);
+		if (str[i] == '}')
+			break ;
+		i = wy_obj(str, i, level);
+		i++;
+	}
+	wy_level(level);
+	printf("<- }\n");
+	return (i);
+}
 
-    level = 0;
-    i = 0;
-    while (str[i])
-    {
-        if (str[i] == '{' || str[i] == '[')
-            i = wy_recu(str, i, level, str[i]);
-        i++;
-    }
+int 		wy_loop_array(char *str, int i, int level)
+{
+	wy_level(level);
+	printf("-> [\n");
+	i++;
+	while (str[i] != ']')
+	{
+		while (str[i] && wy_is_space(str[i]))
+			i++;
+		wy_is_end(str[i]);
+		if (str[i] == ']')
+			break ;
+		i = wy_array(str, i, level);
+		i++;
+	}
+	wy_level(level);
+	printf("-> ]\n");
+	return (i);
+}
+
+int        wy_loop(char *str, int i, int level)
+{
+	printf("str |%c|\n", str[0]);
+	if (str[0] == '{')
+		i = wy_loop_obj(str, i, level);
+	else if (str[0] == '[')
+		i = wy_loop_array(str, i, level);
+	else
+		ft_putendl_fd("Premier caracter invalide", 2);
+	return (i);
 }

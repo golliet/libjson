@@ -56,8 +56,7 @@ char                *wy_open_read(const char *path);
 ** Parse
 */
 
-void        		wy_loop(char *str);
-int         		wy_recu(char *str, int i, int level, char c);
+int		        wy_loop(char *str, int i, int level);
 
 /*
 ** MISC

@@ -15,6 +15,6 @@ int main(int argc, char **argv)
         return (1);
     }
     ft_putendl_fd("Le fichier est correct", 2);
-    wy_loop(str);
+    wy_loop(str, 0, 0);
     return 0;
 }
