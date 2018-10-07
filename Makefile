@@ -1,6 +1,6 @@
 NAME = json
 
-SRC = main.c parse.c open.c misc.c
+SRC = main.c parse.c open.c misc.c value.c
 SRCSDIR = srcs
 SRCS = $(addprefix $(SRCSDIR)/, $(SRC))
 
@@ -14,12 +14,13 @@ LIB			=	libft.a
 LIBD      	=   $(LIBFTDIR)/$(LIB)
 HEADERLIB   =   $(LIBFTDIR)/$(INCLUDES)
 LDFLAGS 	= 	-L$(LIBFTDIR) -lft
+CC          =   gcc -g3 -Wall -Wextra -Werror -fsanitize=address
 
 all: $(NAME)
 
 $(NAME): $(LIBFTDIR)/$(LIB) $(OBJSDIR) $(OBJS)
 	@echo ""
-	gcc -g3 $(LDFLAGS) -I$(HEADERLIB) -I$(INCLUDES) $(OBJS) -o $(NAME)
+	$(CC) $(LDFLAGS) -I$(HEADERLIB) -I$(INCLUDES) $(OBJS) -o $(NAME)
 
 $(OBJSDIR):
 	@mkdir -p $(OBJSDIR);
@@ -32,7 +33,7 @@ $(LIBFTDIR)/$(LIB):
 
 
 $(OBJSDIR)/%.o: $(SRCSDIR)/%.c $(HEADERS)
-	@gcc -g3 -c -o $@ $< -I$(INCLUDES) -I$(HEADERLIB)
+	@$(CC) -c -o $@ $< -I$(INCLUDES) -I$(HEADERLIB)
 
 clean:
 	@make clean -C libft/

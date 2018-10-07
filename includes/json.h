@@ -25,23 +25,24 @@
 
 typedef struct      s_value
 {
-    unsigned char   type;
-    void            *ptr; // String, Object, array
-    long            n_l;
-    double          n_d;
+	void            *ptr;
+	long            n_l;
+	double          n_d;
 }                   t_value;
 
 typedef struct      s_array
 {
-    t_value         *value;
-    struct s_array  *next;
+	struct s_array  *next;
+	unsigned char	type;
+	t_value         *value;
 }                   t_array;
 
 typedef struct      s_obj
 {
-    char            *string;
-    t_value         *value;
-    struct s_obj    *next;
+	struct s_obj    *next;
+	char            *string;
+	t_value         *value;
+	unsigned char	type;
 }                   t_obj;
 
 /*
@@ -57,6 +58,9 @@ char                *wy_open_read(const char *path);
 */
 
 int		        wy_loop(char *str, int i, int level);
+int				wy_value(char *str, int i, int level);
+int		 		wy_loop_obj(char *str, int i, int level);
+int		 		wy_loop_array(char *str, int i, int level);
 
 /*
 ** MISC
