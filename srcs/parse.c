@@ -12,7 +12,6 @@ static t_value		*wy_obj(char *str, int *i, int level, char **key)
 		*key = ft_strjoinfree(*key, (char[2]){str[*i], '\0'}, 1);
 		(*i)++;
 	}
-	//printf("%s\n", *key);
 	(*i)++;
 	wy_is_end(str[*i]);
 	while (str[*i] && wy_is_space(str[*i]))
@@ -44,12 +43,15 @@ t_json 			*wy_loop_obj(char *str, int *i, int level, t_json *json)
 {
 	t_value *value;
 	char 	*key;
+	t_json *head;
 
 	value = NULL;
 	key = NULL;
 	wy_level(level);
 	printf("-> {\n");
 	(*i)++;
+	wy_push(&json, NULL, NULL);
+	head = json;
 	while (str[*i] != '}')
 	{
 		while (str[*i] && wy_is_space(str[*i]))
@@ -58,23 +60,26 @@ t_json 			*wy_loop_obj(char *str, int *i, int level, t_json *json)
 		if (str[*i] == '}')
 			break ;
 		value = wy_obj(str, i, level, &key);
-		wy_push(&json, value, NULL);
+		wy_push(&json, value, key);
 		json->key = key;
 		(*i)++;
 	}
 	wy_level(level);
 	printf("<- }\n");
-	return (NULL);
+	return (head);
 }
 
 t_json				*wy_loop_array(char *str, int *i, int level, t_json *json)
 {
 	t_value *value;
+	t_json *head;
 
 	value = NULL;
 	wy_level(level);
 	printf("-> [\n");
 	(*i)++;
+	wy_push(&json, NULL, NULL);
+	head = json;
 	while (str[*i] != ']')
 	{
 		while (str[*i] && wy_is_space(str[*i]))
@@ -88,7 +93,7 @@ t_json				*wy_loop_array(char *str, int *i, int level, t_json *json)
 	}
 	wy_level(level);
 	printf("-> ]\n");
-	return (NULL);
+	return (head);
 }
 
 t_json				*wy_loop(char *str, int *i, int level)

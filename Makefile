@@ -14,7 +14,7 @@ LIB			=	libft.a
 LIBD      	=   $(LIBFTDIR)/$(LIB)
 HEADERLIB   =   $(LIBFTDIR)/$(INCLUDES)
 LDFLAGS 	= 	-L$(LIBFTDIR) -lft
-CC          =   gcc -g3 -Wall -Wextra -Werror -fsanitize=address
+CC          =   gcc -g3 -Wall -Wextra -Werror #-fsanitize=address
 
 all: $(NAME)
 

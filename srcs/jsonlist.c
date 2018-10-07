@@ -4,6 +4,7 @@
 void			wy_display_json(t_json *list)
 {
 	(void)list;
+
 }
 
 void			wy_free_json(t_json **list)
