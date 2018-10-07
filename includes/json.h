@@ -28,22 +28,16 @@ typedef struct      s_value
 	void            *ptr;
 	long            n_l;
 	double          n_d;
+	char 			*t_f_n;
+	unsigned char	type;
 }                   t_value;
 
-typedef struct      s_array
+typedef struct      s_json
 {
-	struct s_array  *next;
-	unsigned char	type;
+	struct s_json    *next;
+	char            *key;
 	t_value         *value;
-}                   t_array;
-
-typedef struct      s_obj
-{
-	struct s_obj    *next;
-	char            *string;
-	t_value         *value;
-	unsigned char	type;
-}                   t_obj;
+}                   t_json;
 
 /*
 ** Open Read
@@ -57,10 +51,20 @@ char                *wy_open_read(const char *path);
 ** Parse
 */
 
-int		        wy_loop(char *str, int i, int level);
-int				wy_value(char *str, int i, int level);
-int		 		wy_loop_obj(char *str, int i, int level);
-int		 		wy_loop_array(char *str, int i, int level);
+t_json				*wy_loop(char *str, int *i, int level);
+t_value				*wy_value(char *str, int *i, int level);
+t_json				*wy_loop_obj(char *str, int *i, int level, t_json *json);
+t_json				*wy_loop_array(char *str, int *i, int level, t_json *json);
+
+/*
+** List
+*/
+
+void				wy_push(t_json **list, t_value *value, char *key);
+void				wy_free_json(t_json **list);
+void				wy_display_json(t_json *list);
+t_value				*wy_init_value(void);
+
 
 /*
 ** MISC

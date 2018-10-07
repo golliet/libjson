@@ -1,89 +1,107 @@
 
 #include "json.h"
 
-static int			wy_obj(char *str, int i, int level)
+static t_value		*wy_obj(char *str, int *i, int level, char **key)
 {
-	i++;
-	while (str[i] && str[i] != '"') {
-		ft_putchar(str[i]);
-		i++;
+	t_value *value;
+
+	*key = NULL;
+	(*i)++;
+	while (str[*i] && str[*i] != '"')
+	{
+		*key = ft_strjoinfree(*key, (char[2]){str[*i], '\0'}, 1);
+		(*i)++;
 	}
-	i++;
-	if (!str[i])
-		return (-1);
-	while (str[i] && wy_is_space(str[i]))
-		i++;
-	if (!str[i] || str[i] != ':')
-		wy_exit("missing :");
-	ft_putstr(": ");
-	i++;
-	while (str[i] && wy_is_space(str[i]))
-		i++;
-	wy_is_end(str[i]);
-	i = wy_value(str, i, level);
-	if (!(str[i] == ',' || str[i] == '}' || str[i] == ']' || str[i] == '\n'))
-		wy_exit("invalidsfsdfd");
-	i++;
-	return (i);
+	//printf("%s\n", *key);
+	(*i)++;
+	wy_is_end(str[*i]);
+	while (str[*i] && wy_is_space(str[*i]))
+		(*i)++;
+	if (!str[*i] || str[*i] != ':')
+		wy_exit("missing separator : between Key and Value");
+	(*i)++;
+	while (str[*i] && wy_is_space(str[*i]))
+		(*i)++;
+	wy_is_end(str[*i]);
+	value = wy_value(str, i, level);
+	if (!(str[*i] == ',' || str[*i] == '}' || str[*i] == ']' || str[*i] == '\n'))
+		wy_exit("invalid object");
+	(*i)++;
+	return (value);
 }
 
-static int 		wy_array(char *str, int i, int level)
+static t_value 		*wy_array(char *str, int *i, int level)
 {
-	i = wy_value(str, i, level);
-	if (!(str[i] == ',' || str[i] == '}' || str[i] == ']' || str[i] == '\n'))
-		wy_exit("invalidsfsdfd");
-	i++;
-	return (i);
+	t_value *value;
+	value = wy_value(str, i, level);
+	if (!(str[*i] == ',' || str[*i] == '}' || str[*i] == ']' || str[*i] == '\n'))
+		wy_exit("invalid array");
+	(*i)++;
+	return (value);
 }
 
-int 		wy_loop_obj(char *str, int i, int level)
+t_json 			*wy_loop_obj(char *str, int *i, int level, t_json *json)
 {
+	t_value *value;
+	char 	*key;
+
+	value = NULL;
+	key = NULL;
 	wy_level(level);
 	printf("-> {\n");
-	i++;
-	while (str[i] != '}')
+	(*i)++;
+	while (str[*i] != '}')
 	{
-		while (str[i] && wy_is_space(str[i]))
-			i++;
-		wy_is_end(str[i]);
-		if (str[i] == '}')
+		while (str[*i] && wy_is_space(str[*i]))
+			(*i)++;
+		wy_is_end(str[*i]);
+		if (str[*i] == '}')
 			break ;
-		i = wy_obj(str, i, level);
-		i++;
+		value = wy_obj(str, i, level, &key);
+		wy_push(&json, value, NULL);
+		json->key = key;
+		(*i)++;
 	}
 	wy_level(level);
 	printf("<- }\n");
-	return (i);
+	return (NULL);
 }
 
-int 		wy_loop_array(char *str, int i, int level)
+t_json				*wy_loop_array(char *str, int *i, int level, t_json *json)
 {
+	t_value *value;
+
+	value = NULL;
 	wy_level(level);
 	printf("-> [\n");
-	i++;
-	while (str[i] != ']')
+	(*i)++;
+	while (str[*i] != ']')
 	{
-		while (str[i] && wy_is_space(str[i]))
-			i++;
-		wy_is_end(str[i]);
-		if (str[i] == ']')
+		while (str[*i] && wy_is_space(str[*i]))
+			(*i)++;
+		wy_is_end(str[*i]);
+		if (str[*i] == ']')
 			break ;
-		i = wy_array(str, i, level);
-		i++;
+		value = wy_array(str, i, level);
+		wy_push(&json, value, NULL);
+		(*i)++;
 	}
 	wy_level(level);
 	printf("-> ]\n");
-	return (i);
+	return (NULL);
 }
 
-int        wy_loop(char *str, int i, int level)
+t_json				*wy_loop(char *str, int *i, int level)
 {
-	printf("str |%c|\n", str[0]);
+	t_json *json;
+
+	json = NULL;
 	if (str[0] == '{')
-		i = wy_loop_obj(str, i, level);
+		json = wy_loop_obj(str, i, level, json);
 	else if (str[0] == '[')
-		i = wy_loop_array(str, i, level);
+		json = wy_loop_array(str, i, level, json);
 	else
 		ft_putendl_fd("Premier caracter invalide", 2);
-	return (i);
+	printf("\nFIN\n");
+	return (json);
 }

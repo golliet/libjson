@@ -3,6 +3,9 @@
 
 int main(int argc, char **argv)
 {
+	int i;
+
+	i = 0;
     if (argc != 2)
     {
         ft_putendl_fd("Seulement un argument", 2);
@@ -15,6 +18,6 @@ int main(int argc, char **argv)
         return (1);
     }
     ft_putendl_fd("Le fichier est correct", 2);
-    wy_loop(str, 0, 0);
+    wy_loop(str, &i, 0);
     return 0;
 }

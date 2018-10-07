@@ -1,6 +1,6 @@
 NAME = json
 
-SRC = main.c parse.c open.c misc.c value.c
+SRC = main.c parse.c open.c misc.c value.c jsonlist.c
 SRCSDIR = srcs
 SRCS = $(addprefix $(SRCSDIR)/, $(SRC))
 
