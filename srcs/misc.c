@@ -14,18 +14,6 @@ void		wy_is_end(char c)
 	wy_exit("\0");
 }
 
-void        wy_level(int level)
-{
-	int i;
-
-	i = 0;
-	while (i < level)
-	{
-		ft_putstr("|");
-		i++;
-	}
-}
-
 int			wy_is_space(char c)
 {
 	return (c == '\t' || c == '\n' || c == '\r' || c == ' ');

@@ -28,7 +28,6 @@ typedef struct      s_value
 	void            *ptr;
 	long            n_l;
 	double          n_d;
-	char 			*t_f_n;
 	unsigned char	type;
 }                   t_value;
 
@@ -51,10 +50,10 @@ char                *wy_open_read(const char *path);
 ** Parse
 */
 
-t_json				*wy_loop(char *str, int *i, int level);
-t_value				*wy_value(char *str, int *i, int level);
-t_json				*wy_loop_obj(char *str, int *i, int level, t_json *json);
-t_json				*wy_loop_array(char *str, int *i, int level, t_json *json);
+t_json				*wy_loop(char *str, int *i);
+t_value				*wy_value(char *str, int *i);
+t_json				*wy_loop_obj(char *str, int *i, t_json *json);
+t_json				*wy_loop_array(char *str, int *i, t_json *json);
 
 /*
 ** List
@@ -62,7 +61,6 @@ t_json				*wy_loop_array(char *str, int *i, int level, t_json *json);
 
 void				wy_push(t_json **list, t_value *value, char *key);
 void				wy_free_json(t_json **list);
-void				wy_display_json(t_json *list);
 t_value				*wy_init_value(void);
 
 
@@ -72,8 +70,9 @@ t_value				*wy_init_value(void);
 
 void				wy_is_end(char c);
 void				wy_exit(char *str);
-void        		wy_level(int level);
 int					wy_is_space(char c);
+void				wy_display_json(t_json *list, int level);
+
 
 
 
